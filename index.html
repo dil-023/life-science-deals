@@ -1,0 +1,3046 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card: #ffffff;
+      --text: #17202b;
+      --muted: #697586;
+      --border: #e3e7ec;
+      --navy: #15283d;
+      --blue: #355d85;
+      --light-blue: #eaf0f6;
+      --green: #237a57;
+      --light-green: #eaf5ef;
+      --orange: #a56324;
+      --shadow: 0 1px 3px rgba(15,23,42,.04);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+    }
+
+    button,
+    select,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 28px 30px 60px;
+    }
+
+    /* HEADER */
+
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -0.7px;
+      font-weight: 750;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 7px;
+      font-size: 14px;
+    }
+
+    .live {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #29a36a;
+    }
+
+    /* NAV */
+
+    .nav {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .nav-btn {
+      border: none;
+      background: transparent;
+      padding: 11px 14px;
+      color: var(--muted);
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-btn.active {
+      color: var(--navy);
+      border-bottom-color: var(--navy);
+    }
+
+    /* FILTERS */
+
+    .filters {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1.25fr repeat(5, 1fr) auto;
+      gap: 9px;
+    }
+
+    select,
+    input {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 0 11px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    select:focus,
+    input:focus {
+      border-color: #91a9c0;
+      box-shadow: 0 0 0 3px rgba(53,93,133,.08);
+    }
+
+    .advanced-button,
+    .secondary-button {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      border-radius: 9px;
+      padding: 0 14px;
+      min-height: 42px;
+      white-space: nowrap;
+    }
+
+    .advanced {
+      display: none;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 9px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .advanced.show {
+      display: grid;
+    }
+
+    .active-filters {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-height: 30px;
+      margin: 8px 2px 16px;
+    }
+
+    .filter-chip {
+      border: 1px solid #cad6e1;
+      background: var(--light-blue);
+      color: var(--navy);
+      border-radius: 18px;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+
+    .clear-button {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 6px;
+    }
+
+    /* KPIs */
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 17px;
+      box-shadow: var(--shadow);
+    }
+
+    .kpi-label {
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: .05em;
+      font-weight: 650;
+    }
+
+    .kpi-value {
+      font-size: 27px;
+      font-weight: 750;
+      margin-top: 7px;
+      letter-spacing: -.4px;
+    }
+
+    .kpi-note {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    /* GRID */
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 17px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .panel-subtitle {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 15px;
+    }
+
+    /* BARS */
+
+    .bars {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bar-row {
+      border: none;
+      background: transparent;
+      padding: 0;
+      text-align: left;
+      width: 100%;
+    }
+
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 5px;
+      font-size: 12px;
+    }
+
+    .bar-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bar-count {
+      color: var(--muted);
+    }
+
+    .bar-track {
+      height: 7px;
+      border-radius: 10px;
+      background: #eef1f4;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 10px;
+      transition: width .2s ease;
+    }
+
+    .bar-row:hover .bar-fill {
+      background: var(--navy);
+    }
+
+    /* TIMELINE */
+
+    .timeline {
+      height: 190px;
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      border-bottom: 1px solid var(--border);
+      padding-top: 10px;
+    }
+
+    .timeline-item {
+      flex: 1;
+      min-width: 7px;
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .timeline-bar {
+      width: 100%;
+      background: #6684a3;
+      border-radius: 4px 4px 0 0;
+      min-height: 3px;
+    }
+
+    .timeline-labels {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 7px;
+    }
+
+    /* TABLE */
+
+    .table-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-top: 14px;
+    }
+
+    .table-header {
+      padding: 17px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .results {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .sort {
+      width: auto;
+      min-width: 150px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 1050px;
+    }
+
+    th {
+      padding: 11px 14px;
+      text-align: left;
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      border-bottom: 1px solid var(--border);
+      background: #fafbfc;
+    }
+
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid #edf0f2;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr {
+      cursor: pointer;
+    }
+
+    tbody tr:hover {
+      background: #fafbfd;
+    }
+
+    .company {
+      font-weight: 650;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 7px;
+      border-radius: 6px;
+      background: #f0f3f6;
+      color: #465363;
+      font-size: 10px;
+    }
+
+    .value {
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .quality-badge {
+      display: inline-block;
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .q-high {
+      background: #e5f6ec;
+      color: #1b7f45;
+    }
+
+    .q-mid {
+      background: #fdf3dd;
+      color: #93650a;
+    }
+
+    .q-low {
+      background: #fdeaea;
+      color: #b3261e;
+    }
+
+    .drawer-notes {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f7f8fa;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* DEAL DRAWER */
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,.25);
+      z-index: 100;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -620px;
+      width: min(600px, 94vw);
+      height: 100%;
+      background: white;
+      z-index: 101;
+      box-shadow: -10px 0 35px rgba(15,23,42,.12);
+      transition: right .25s ease;
+      overflow-y: auto;
+      padding: 25px;
+    }
+
+    .drawer.show {
+      right: 0;
+    }
+
+    .drawer-close {
+      float: right;
+      border: none;
+      background: #f2f4f6;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 19px;
+    }
+
+    .drawer-title {
+      font-size: 23px;
+      font-weight: 750;
+      padding-right: 50px;
+      line-height: 1.3;
+    }
+
+    .drawer-meta {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 7px;
+      line-height: 1.7;
+    }
+
+    .drawer-section {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      margin-top: 18px;
+    }
+
+    .drawer-heading {
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: .05em;
+      font-size: 10px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .drawer-text {
+      line-height: 1.65;
+      font-size: 13px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+      margin-top: 20px;
+    }
+
+    .detail {
+      background: #f7f8fa;
+      border-radius: 9px;
+      padding: 12px;
+    }
+
+    .detail-label {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .detail-value {
+      margin-top: 5px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .source-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 650;
+    }
+
+    /* EMPTY/LOADING */
+
+    .loading {
+      padding: 80px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty {
+      padding: 30px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media(max-width: 1100px) {
+      .filter-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .advanced {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .kpis {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media(max-width: 750px) {
+      .app {
+        padding: 20px 14px 40px;
+      }
+
+      .header {
+        flex-direction: column;
+      }
+
+      .nav {
+        overflow-x: auto;
+      }
+
+      .filter-grid,
+      .advanced {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .kpis {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div id="loading" class="loading">
+    Loading Life Sciences Deal Intelligence...
+  </div>
+
+  <div id="main" class="hidden">
+
+    <header class="header">
+      <div>
+        <h1 class="title">Life Sciences Deal Intelligence</h1>
+        <div class="subtitle">
+          Global M&A, licensing, partnerships & investment intelligence
+        </div>
+      </div>
+
+      <div class="live">
+        <span class="live-dot"></span>
+        <span id="liveText">Live data</span>
+      </div>
+    </header>
+
+    <div id="dataAsOf" style="color:var(--muted);font-size:11px;margin:-6px 0 10px;"></div>
+
+    <nav class="nav">
+      <button class="nav-btn active" data-view="overview">Overview</button>
+      <button class="nav-btn" data-view="explorer">Deal Explorer</button>
+    </nav>
+
+    <section class="filters">
+
+      <div class="filter-grid">
+
+        <input
+          id="search"
+          type="search"
+          placeholder="Search company, asset, indication..."
+        >
+
+        <select id="dateFilter">
+          <option value="all">All dates</option>
+          <option value="30">Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="365">Last 12 months</option>
+          <option value="year">This year</option>
+        </select>
+
+        <select id="dealType">
+          <option value="">All deal types</option>
+        </select>
+
+        <select id="therapeuticArea">
+          <option value="">All therapeutic areas</option>
+        </select>
+
+        <select id="modality">
+          <option value="">All modalities</option>
+        </select>
+
+        <select id="developmentStage">
+          <option value="">All stages</option>
+        </select>
+
+        <button
+          id="advancedButton"
+          class="advanced-button"
+          type="button"
+        >
+          More filters
+        </button>
+
+      </div>
+
+      <div id="advanced" class="advanced">
+
+        <select id="diseaseArea">
+          <option value="">All disease areas</option>
+        </select>
+
+        <select id="company">
+          <option value="">All companies</option>
+        </select>
+
+        <select id="currency">
+          <option value="">All currencies</option>
+        </select>
+
+        <select id="dealStatus">
+          <option value="">All statuses</option>
+        </select>
+
+        <select id="reviewState">
+          <option value="">All review states</option>
+        </select>
+
+        <select id="validationStatus">
+          <option value="">All provenance tiers</option>
+        </select>
+
+        <select id="country">
+          <option value="">All geographies</option>
+        </select>
+
+      </div>
+
+    </section>
+
+    <div id="activeFilters" class="active-filters"></div>
+
+
+    <!-- OVERVIEW -->
+
+    <div id="overviewView">
+
+      <section class="kpis">
+
+        <div class="kpi">
+          <div class="kpi-label">Deals</div>
+          <div id="kpiDeals" class="kpi-value">0</div>
+          <div class="kpi-note">Matching current filters</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">M&A</div>
+          <div id="kpiMA" class="kpi-value">0</div>
+          <div class="kpi-note">Acquisitions & mergers</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">Licensing</div>
+          <div id="kpiLicensing" class="kpi-value">0</div>
+          <div class="kpi-note">Licensing transactions</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">Partnerships</div>
+          <div id="kpiPartnerships" class="kpi-value">0</div>
+          <div class="kpi-note">Strategic collaborations</div>
+        </div>
+
+       <div class="kpi">
+  <div class="kpi-label">Therapeutic Areas</div>
+  <div id="kpiTA" class="kpi-value">0</div>
+  <div class="kpi-note">Represented across current deals</div>
+</div>
+
+      </section>
+
+
+      <div class="grid-2">
+
+        <section class="panel">
+          <div class="panel-title">Deal Activity</div>
+          <div class="panel-subtitle">
+            Transaction announcements over time
+          </div>
+
+          <div id="timeline" class="timeline"></div>
+          <div id="timelineLabels" class="timeline-labels"></div>
+        </section>
+
+
+        <section class="panel">
+          <div class="panel-title">Transaction Mix</div>
+          <div class="panel-subtitle">
+            Click a category to filter the dashboard
+          </div>
+
+          <div id="dealTypeBars" class="bars"></div>
+        </section>
+
+      </div>
+
+
+      <div class="grid-2">
+
+        <section class="panel">
+          <div class="panel-title">Therapeutic Area Activity</div>
+          <div class="panel-subtitle">
+            Areas attracting transaction activity
+          </div>
+
+          <div id="taBars" class="bars"></div>
+        </section>
+
+
+        <section class="panel">
+          <div class="panel-title">Modality Activity</div>
+          <div class="panel-subtitle">
+            Technologies represented across transactions
+          </div>
+
+          <div id="modalityBars" class="bars"></div>
+        </section>
+
+      </div>
+
+
+      <div class="grid-2">
+
+        <section class="panel">
+          <div class="panel-title">Review State</div>
+          <div class="panel-subtitle">
+            How much data needs human attention
+          </div>
+
+          <div id="reviewBars" class="bars"></div>
+        </section>
+
+
+        <section class="panel">
+          <div class="panel-title">Provenance</div>
+          <div class="panel-subtitle">
+            How well corroborated the sources are
+          </div>
+
+          <div id="provenanceBars" class="bars"></div>
+        </section>
+
+      </div>
+
+    </div>
+
+
+    <!-- TABLE / EXPLORER -->
+
+    <section class="table-panel">
+
+      <div class="table-header">
+
+        <div>
+          <div id="tableTitle" class="table-title">
+            Latest Transactions
+          </div>
+
+          <div id="resultCount" class="results"></div>
+        </div>
+
+        <div class="table-actions">
+          <select id="sort" class="sort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="valueHigh">Highest value</option>
+            <option value="valueLow">Lowest value</option>
+            <option value="buyer">Buyer A–Z</option>
+          </select>
+        </div>
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Buyer / Partner</th>
+              <th>Target / Partner</th>
+              <th>Deal Type</th>
+              <th>Therapeutic Area</th>
+              <th>Modality</th>
+              <th>Stage</th>
+              <th>Value</th>
+              <th>Review</th>
+            </tr>
+          </thead>
+
+          <tbody id="dealRows"></tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+
+<div id="overlay" class="overlay"></div>
+
+<aside id="drawer" class="drawer">
+
+  <button
+    id="drawerClose"
+    class="drawer-close"
+    type="button"
+  >
+    ×
+  </button>
+
+  <div id="drawerContent"></div>
+
+</aside>
+
+
+<script>
+
+let allDeals = [];
+let filteredDeals = [];
+let currentView = "overview";
+
+
+const filterIds = [
+  "dealType",
+  "therapeuticArea",
+  "modality",
+  "developmentStage",
+  "diseaseArea",
+  "company",
+  "currency",
+  "dealStatus",
+  "reviewState",
+  "validationStatus",
+  "country"
+];
+
+
+function start() {
+
+  google.script.run
+
+    .withSuccessHandler(function(payload) {
+
+      const data =
+        payload &&
+        Array.isArray(payload.deals)
+          ? payload
+          : { deals: [] };
+
+      allDeals = data.deals;
+
+      document
+        .getElementById("loading")
+        .classList.add("hidden");
+
+      document
+        .getElementById("main")
+        .classList.remove("hidden");
+
+      document
+        .getElementById("liveText")
+        .textContent =
+          "Live · " +
+          allDeals.length +
+          " deals";
+
+      const asOf =
+        data.lastRun ||
+        data.generatedAt ||
+        "";
+
+      document
+        .getElementById("dataAsOf")
+        .textContent =
+          asOf
+            ? "Pipeline last run: " + asOf
+            : "Pipeline has not been recorded yet.";
+
+      populateFilters();
+
+      bindEvents();
+
+      applyFilters();
+
+    })
+
+    .withFailureHandler(function(error) {
+
+      document
+        .getElementById("loading")
+        .innerHTML =
+          "Could not load dashboard data.<br><br>" +
+          escapeHtml(error.message);
+
+    })
+
+    .getDashboardData();
+
+}
+
+
+function populateFilters() {
+
+  populateSelect(
+    "dealType",
+    unique("dealType")
+  );
+
+ const therapeuticAreas = [
+  ...new Set(
+    allDeals
+      .map(function(deal) {
+        return String(
+          deal.therapeuticArea || ""
+        ).trim();
+      })
+      .filter(function(value) {
+        return value !== "";
+      })
+  )
+].sort(function(a, b) {
+  return a.localeCompare(b);
+});
+
+populateSelect(
+  "therapeuticArea",
+  therapeuticAreas
+);
+
+  populateSelect(
+    "modality",
+    unique("modality")
+  );
+
+  populateSelect(
+    "developmentStage",
+    unique("developmentStage")
+  );
+
+  populateSelect(
+    "diseaseArea",
+    unique("diseaseArea")
+  );
+
+  populateSelect(
+    "currency",
+    unique("currency")
+  );
+
+  populateSelect(
+    "dealStatus",
+    unique("dealStatus")
+  );
+
+
+  populateSelect(
+    "reviewState",
+    unique("reviewState")
+  );
+
+
+  populateSelect(
+    "validationStatus",
+    unique("validationStatus")
+  );
+
+
+  let companies = [];
+
+  allDeals.forEach(function(d) {
+
+    if (d.buyer) {
+      companies.push(d.buyer);
+    }
+
+    if (d.target) {
+      companies.push(d.target);
+    }
+
+  });
+
+  companies = [
+    ...new Set(companies)
+  ].sort();
+
+
+  populateSelect(
+    "company",
+    companies
+  );
+
+
+  let countries = [];
+
+  allDeals.forEach(function(d) {
+
+    if (d.buyerCountry) {
+      countries.push(d.buyerCountry);
+    }
+
+    if (d.targetCountry) {
+      countries.push(d.targetCountry);
+    }
+
+  });
+
+  countries = [
+    ...new Set(countries)
+  ].sort();
+
+
+  populateSelect(
+    "country",
+    countries
+  );
+
+}
+
+
+function unique(field) {
+
+  return [
+    ...new Set(
+      allDeals
+        .map(function(d) {
+          return d[field];
+        })
+        .filter(Boolean)
+    )
+  ].sort();
+
+}
+
+
+function populateSelect(id, values) {
+
+  const select = document.getElementById(id);
+
+  if (!select) return;
+
+  // Keep the existing "All..." option
+  const firstOption = select.options[0];
+
+  // Remove any previously generated options
+  select.innerHTML = "";
+
+  if (firstOption) {
+    select.appendChild(firstOption);
+  }
+
+  // Clean, deduplicate and sort values
+  const cleanedValues = [
+    ...new Set(
+      values
+        .map(function(value) {
+          return String(value || "").trim();
+        })
+        .filter(function(value) {
+          return value !== "";
+        })
+    )
+  ].sort(function(a, b) {
+    return a.localeCompare(b);
+  });
+
+  cleanedValues.forEach(function(value) {
+
+    const option =
+      document.createElement("option");
+
+    option.value = value;
+    option.textContent = value;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+function bindEvents() {
+
+  document
+    .getElementById("search")
+    .addEventListener(
+      "input",
+      applyFilters
+    );
+
+
+  document
+    .getElementById("dateFilter")
+    .addEventListener(
+      "change",
+      applyFilters
+    );
+
+
+  filterIds.forEach(function(id) {
+
+    document
+      .getElementById(id)
+      .addEventListener(
+        "change",
+        applyFilters
+      );
+
+  });
+
+
+  document
+    .getElementById("sort")
+    .addEventListener(
+      "change",
+      renderTable
+    );
+
+
+  document
+    .getElementById("advancedButton")
+    .addEventListener(
+      "click",
+      function() {
+
+        document
+          .getElementById("advanced")
+          .classList
+          .toggle("show");
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(function(button) {
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          switchView(
+            button.dataset.view
+          );
+
+        }
+      );
+
+    });
+
+
+  document
+    .getElementById("drawerClose")
+    .addEventListener(
+      "click",
+      closeDrawer
+    );
+
+
+  document
+    .getElementById("overlay")
+    .addEventListener(
+      "click",
+      closeDrawer
+    );
+
+}
+
+
+function applyFilters() {
+
+  const search =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  const dateMode =
+    document
+      .getElementById("dateFilter")
+      .value;
+
+
+  const now =
+    new Date();
+
+
+  filteredDeals =
+    allDeals.filter(function(d) {
+
+
+      /* SEARCH */
+
+      if (search) {
+
+        const haystack = [
+          d.buyer,
+          d.target,
+          d.leadAsset,
+          d.indication,
+          d.diseaseArea,
+          d.aiSummary,
+          d.strategicRationale
+        ]
+        .join(" ")
+        .toLowerCase();
+
+
+        if (!haystack.includes(search)) {
+          return false;
+        }
+
+      }
+
+
+      /* STANDARD FILTERS */
+
+      if (
+        !matches(
+          d.dealType,
+          "dealType"
+        )
+      ) return false;
+
+
+      if (
+        !matches(
+          d.therapeuticArea,
+          "therapeuticArea"
+        )
+      ) return false;
+
+
+      if (
+        !matches(
+          d.modality,
+          "modality"
+        )
+      ) return false;
+
+
+      if (
+        !matches(
+          d.developmentStage,
+          "developmentStage"
+        )
+      ) return false;
+
+
+      if (
+        !matches(
+          d.diseaseArea,
+          "diseaseArea"
+        )
+      ) return false;
+
+
+      if (
+        !matches(
+          d.currency,
+          "currency"
+        )
+      ) return false;
+
+
+      if (
+        !matches(
+          d.dealStatus,
+          "dealStatus"
+        )
+      ) return false;
+
+
+      if (
+        !matches(
+          d.reviewState,
+          "reviewState"
+        )
+      ) return false;
+
+
+      if (
+        !matches(
+          d.validationStatus,
+          "validationStatus"
+        )
+      ) return false;
+
+
+      /* COMPANY */
+
+      const company =
+        document
+          .getElementById("company")
+          .value;
+
+
+      if (
+        company &&
+        d.buyer !== company &&
+        d.target !== company
+      ) {
+        return false;
+      }
+
+
+      /* COUNTRY */
+
+      const country =
+        document
+          .getElementById("country")
+          .value;
+
+
+      if (
+        country &&
+        d.buyerCountry !== country &&
+        d.targetCountry !== country
+      ) {
+        return false;
+      }
+
+
+      /* DATE */
+
+      if (
+        dateMode !== "all" &&
+        d.announcementDate
+      ) {
+
+        const dealDate =
+          parseDate(
+            d.announcementDate
+          );
+
+
+        if (!dealDate) {
+          return false;
+        }
+
+
+        if (
+          dateMode === "year" &&
+          dealDate.getFullYear() !==
+          now.getFullYear()
+        ) {
+          return false;
+        }
+
+
+        if (
+          ["30","90","365"]
+            .includes(dateMode)
+        ) {
+
+          const days =
+            Number(dateMode);
+
+          const cutoff =
+            new Date();
+
+          cutoff.setDate(
+            cutoff.getDate() - days
+          );
+
+
+          if (dealDate < cutoff) {
+            return false;
+          }
+
+        }
+
+      }
+
+
+      return true;
+
+    });
+
+
+  renderAll();
+
+}
+
+
+function matches(value, id) {
+
+  const selected =
+    document
+      .getElementById(id)
+      .value;
+
+  return (
+    !selected ||
+    value === selected
+  );
+
+}
+
+
+function renderAll() {
+
+  renderKPIs();
+
+  renderBars(
+    "dealTypeBars",
+    "dealType",
+    "dealType"
+  );
+
+  renderBars(
+    "taBars",
+    "therapeuticArea",
+    "therapeuticArea"
+  );
+
+  renderBars(
+    "modalityBars",
+    "modality",
+    "modality"
+  );
+
+  renderBars(
+    "reviewBars",
+    "reviewState",
+    "reviewState"
+  );
+
+  renderBars(
+    "provenanceBars",
+    "validationStatus",
+    "validationStatus"
+  );
+
+  renderTimeline();
+
+  renderTable();
+
+  renderActiveFilters();
+
+}
+
+
+function renderKPIs() {
+
+  document
+    .getElementById("kpiDeals")
+    .textContent =
+      filteredDeals.length;
+
+
+  const ma =
+    filteredDeals.filter(
+      function(d) {
+
+        return [
+          "Acquisition",
+          "Merger",
+          "Asset Acquisition"
+        ].includes(
+          d.dealType
+        );
+
+      }
+    ).length;
+
+
+  const licensing =
+    filteredDeals.filter(
+      function(d) {
+
+        return [
+          "Licensing",
+          "In-Licensing",
+          "Out-Licensing"
+        ].includes(
+          d.dealType
+        );
+
+      }
+    ).length;
+
+
+  const partnerships =
+    filteredDeals.filter(
+      function(d) {
+
+        return [
+          "Partnership",
+          "Co-Development",
+          "Co-Commercialisation",
+          "Joint Venture"
+        ].includes(
+          d.dealType
+        );
+
+      }
+    ).length;
+
+
+  document
+    .getElementById("kpiMA")
+    .textContent = ma;
+
+
+  document
+    .getElementById("kpiLicensing")
+    .textContent =
+      licensing;
+
+
+  document
+    .getElementById("kpiPartnerships")
+    .textContent =
+      partnerships;
+
+
+  const therapeuticAreas = [
+  ...new Set(
+    filteredDeals
+      .map(function(d) {
+        return String(d.therapeuticArea || "").trim();
+      })
+      .filter(function(value) {
+        return value !== "";
+      })
+  )
+];
+
+document
+  .getElementById("kpiTA")
+  .textContent = therapeuticAreas.length;
+
+}
+
+
+function renderBars(
+  elementId,
+  field,
+  filterId
+) {
+
+  const container =
+    document.getElementById(
+      elementId
+    );
+
+
+  const counts =
+    countBy(
+      filteredDeals,
+      field
+    );
+
+
+  let entries =
+  Object.entries(counts)
+    .filter(function(entry) {
+      return entry[0] !== "Unknown";
+    })
+    .sort(function(a, b) {
+      return b[1] - a[1];
+    });
+
+// Show every Therapeutic Area.
+// Keep other charts limited to the top 8.
+if (field !== "therapeuticArea") {
+  entries = entries.slice(0, 8);
+}
+
+
+  if (!entries.length) {
+
+    container.innerHTML =
+      '<div class="empty">' +
+      'No data for current filters.' +
+      '</div>';
+
+    return;
+  }
+
+
+  const max =
+    entries[0][1];
+
+
+  container.innerHTML =
+    entries.map(
+      function(entry) {
+
+        const label =
+          entry[0];
+
+        const count =
+          entry[1];
+
+        const width =
+          (count / max) * 100;
+
+
+        return `
+          <button
+            type="button"
+            class="bar-row"
+            data-filter="${escapeHtml(filterId)}"
+            data-value="${escapeHtml(label)}"
+          >
+
+            <div class="bar-meta">
+
+              <span class="bar-label">
+                ${escapeHtml(label)}
+              </span>
+
+              <span class="bar-count">
+                ${count}
+              </span>
+
+            </div>
+
+            <div class="bar-track">
+
+              <div
+                class="bar-fill"
+                style="width:${width}%"
+              ></div>
+
+            </div>
+
+          </button>
+        `;
+
+      }
+    ).join("");
+
+
+  container
+    .querySelectorAll(
+      ".bar-row"
+    )
+    .forEach(
+      function(button) {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            document
+              .getElementById(
+                button.dataset.filter
+              )
+              .value =
+                button.dataset.value;
+
+            applyFilters();
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+function countBy(data, field) {
+
+  const counts = {};
+
+  data.forEach(function(d) {
+
+    const value =
+      d[field] || "Unknown";
+
+    counts[value] =
+      (counts[value] || 0) + 1;
+
+  });
+
+  return counts;
+
+}
+
+
+function renderTimeline() {
+
+  const container =
+    document.getElementById(
+      "timeline"
+    );
+
+
+  const labels =
+    document.getElementById(
+      "timelineLabels"
+    );
+
+
+  const monthCounts = {};
+
+
+  filteredDeals.forEach(
+    function(d) {
+
+      if (!d.announcementDate) {
+        return;
+      }
+
+      const month =
+        d.announcementDate
+          .substring(0,7);
+
+      monthCounts[month] =
+        (monthCounts[month] || 0) + 1;
+
+    }
+  );
+
+
+  const months =
+    Object.keys(monthCounts)
+      .sort();
+
+
+  if (!months.length) {
+
+    container.innerHTML =
+      '<div class="empty">' +
+      'No dated transactions.' +
+      '</div>';
+
+    labels.innerHTML = "";
+
+    return;
+
+  }
+
+
+  const max =
+    Math.max(
+      ...months.map(
+        function(m) {
+          return monthCounts[m];
+        }
+      )
+    );
+
+
+  container.innerHTML =
+    months.map(
+      function(month) {
+
+        const count =
+          monthCounts[month];
+
+        const height =
+          Math.max(
+            3,
+            (count / max) * 100
+          );
+
+
+        return `
+          <div
+            class="timeline-item"
+            title="${escapeHtml(month)}: ${count} deals"
+          >
+
+            <div
+              class="timeline-bar"
+              style="height:${height}%"
+            ></div>
+
+          </div>
+        `;
+
+      }
+    ).join("");
+
+
+  labels.innerHTML =
+    "<span>" +
+    escapeHtml(
+      formatMonth(
+        months[0]
+      )
+    ) +
+    "</span>" +
+
+    "<span>" +
+    escapeHtml(
+      formatMonth(
+        months[
+          months.length - 1
+        ]
+      )
+    ) +
+    "</span>";
+
+}
+
+
+function renderTable() {
+
+  const body =
+    document.getElementById(
+      "dealRows"
+    );
+
+
+  let deals =
+    filteredDeals.slice();
+
+
+  const sort =
+    document
+      .getElementById("sort")
+      .value;
+
+
+  if (sort === "newest") {
+
+    deals.sort(
+      function(a,b) {
+
+        return String(
+          b.announcementDate
+        ).localeCompare(
+          String(
+            a.announcementDate
+          )
+        );
+
+      }
+    );
+
+  }
+
+
+  if (sort === "oldest") {
+
+    deals.sort(
+      function(a,b) {
+
+        return String(
+          a.announcementDate
+        ).localeCompare(
+          String(
+            b.announcementDate
+          )
+        );
+
+      }
+    );
+
+  }
+
+
+  if (sort === "valueHigh") {
+
+    deals.sort(
+      function(a,b) {
+
+        return (
+          numericValue(b) -
+          numericValue(a)
+        );
+
+      }
+    );
+
+  }
+
+
+  if (sort === "valueLow") {
+
+    deals.sort(
+      function(a,b) {
+
+        return (
+          numericValue(a) -
+          numericValue(b)
+        );
+
+      }
+    );
+
+  }
+
+
+  if (sort === "buyer") {
+
+    deals.sort(
+      function(a,b) {
+
+        return String(
+          a.buyer || ""
+        ).localeCompare(
+          String(
+            b.buyer || ""
+          )
+        );
+
+      }
+    );
+
+  }
+
+
+  document
+    .getElementById(
+      "resultCount"
+    )
+    .textContent =
+      deals.length +
+      (
+        deals.length === 1
+          ? " transaction"
+          : " transactions"
+      );
+
+
+  if (!deals.length) {
+
+    body.innerHTML =
+      '<tr>' +
+      '<td colspan="9" class="empty">' +
+      'No deals match these filters.' +
+      '</td>' +
+      '</tr>';
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    deals.map(
+      function(d, index) {
+
+        return `
+          <tr data-index="${index}">
+
+            <td>
+              ${escapeHtml(
+                displayDate(
+                  d.announcementDate
+                )
+              )}
+            </td>
+
+            <td class="company">
+              ${escapeHtml(
+                d.buyer || "—"
+              )}
+            </td>
+
+            <td class="company">
+              ${escapeHtml(
+                d.target || "—"
+              )}
+            </td>
+
+            <td>
+              <span class="tag">
+                ${escapeHtml(
+                  d.dealType || "—"
+                )}
+              </span>
+            </td>
+
+            <td>
+              ${escapeHtml(
+                d.therapeuticArea || "—"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                d.modality || "—"
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                d.developmentStage || "—"
+              )}
+            </td>
+
+            <td class="value">
+              ${escapeHtml(
+                formatDealValue(d)
+              )}
+            </td>
+
+            <td>
+              ${reviewBadge(d)}
+            </td>
+
+          </tr>
+        `;
+
+      }
+    ).join("");
+
+
+  body
+    .querySelectorAll("tr")
+    .forEach(
+      function(row) {
+
+        row.addEventListener(
+          "click",
+          function() {
+
+            const deal =
+              deals[
+                Number(
+                  row.dataset.index
+                )
+              ];
+
+            openDeal(deal);
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+function renderActiveFilters() {
+
+  const container =
+    document.getElementById(
+      "activeFilters"
+    );
+
+
+  const chips = [];
+
+
+  filterIds.forEach(
+    function(id) {
+
+      const element =
+        document.getElementById(id);
+
+      if (element.value) {
+
+        chips.push({
+          id: id,
+          label:
+            element.options[
+              element.selectedIndex
+            ].text
+        });
+
+      }
+
+    }
+  );
+
+
+  const date =
+    document
+      .getElementById(
+        "dateFilter"
+      );
+
+
+  if (date.value !== "all") {
+
+    chips.push({
+      id: "dateFilter",
+      label:
+        date.options[
+          date.selectedIndex
+        ].text
+    });
+
+  }
+
+
+  if (!chips.length) {
+
+    container.innerHTML =
+      '<span class="muted" style="font-size:12px;">' +
+      'Showing all transactions' +
+      '</span>';
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    chips.map(
+      function(chip) {
+
+        return `
+          <button
+            type="button"
+            class="filter-chip"
+            data-clear="${escapeHtml(chip.id)}"
+          >
+            ${escapeHtml(chip.label)} ×
+          </button>
+        `;
+
+      }
+    ).join("") +
+
+    `
+      <button
+        type="button"
+        id="clearAll"
+        class="clear-button"
+      >
+        Clear all
+      </button>
+    `;
+
+
+  container
+    .querySelectorAll(
+      ".filter-chip"
+    )
+    .forEach(
+      function(button) {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            const element =
+              document.getElementById(
+                button.dataset.clear
+              );
+
+            element.value =
+              button.dataset.clear ===
+              "dateFilter"
+                ? "all"
+                : "";
+
+            applyFilters();
+
+          }
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById("clearAll")
+    .addEventListener(
+      "click",
+      clearAllFilters
+    );
+
+}
+
+
+function clearAllFilters() {
+
+  document
+    .getElementById("search")
+    .value = "";
+
+
+  document
+    .getElementById(
+      "dateFilter"
+    )
+    .value = "all";
+
+
+  filterIds.forEach(
+    function(id) {
+
+      document
+        .getElementById(id)
+        .value = "";
+
+    }
+  );
+
+
+  applyFilters();
+
+}
+
+
+function openDeal(d) {
+
+  const content =
+    document.getElementById(
+      "drawerContent"
+    );
+
+
+  const source =
+    safeUrl(d.sourceUrl);
+
+
+  content.innerHTML = `
+
+    <div class="drawer-title">
+
+      ${escapeHtml(
+        d.buyer || "Unknown buyer"
+      )}
+
+      →
+
+      ${escapeHtml(
+        d.target || "Unknown target"
+      )}
+
+    </div>
+
+
+    <div class="drawer-meta">
+
+      ${escapeHtml(
+        d.dealType || "Deal"
+      )}
+
+      ·
+
+      ${escapeHtml(
+        d.therapeuticArea || "Unknown therapeutic area"
+      )}
+
+      ·
+
+      ${escapeHtml(
+        displayDate(
+          d.announcementDate
+        )
+      )}
+
+    </div>
+
+
+    <div class="detail-grid">
+
+      ${detailBox(
+        "Deal Value",
+        formatDealValue(d)
+      )}
+
+      ${detailBox(
+        "Deal Status",
+        d.dealStatus
+      )}
+
+      ${detailBox(
+        "Modality",
+        d.modality
+      )}
+
+      ${detailBox(
+        "Development Stage",
+        d.developmentStage
+      )}
+
+      ${detailBox(
+        "Lead Asset",
+        d.leadAsset
+      )}
+
+      ${detailBox(
+        "Indication",
+        d.indication
+      )}
+
+      ${detailBox(
+        "Disease Area",
+        d.diseaseArea
+      )}
+
+      ${detailBox(
+        "Deal Scope",
+        d.dealScope
+      )}
+
+    </div>
+
+
+    ${
+      d.aiSummary
+        ? drawerSection(
+            "AI Summary",
+            d.aiSummary
+          )
+        : ""
+    }
+
+
+    ${
+      d.strategicRationale
+        ? drawerSection(
+            "Strategic Rationale",
+            d.strategicRationale
+          )
+        : ""
+    }
+
+
+    ${
+      d.strategicRationaleTags
+        ? drawerSection(
+            "Rationale Tags",
+            d.strategicRationaleTags
+          )
+        : ""
+    }
+
+
+    <div class="drawer-section">
+
+      <div class="drawer-heading">
+        Verification
+      </div>
+
+      <div class="drawer-text">
+
+        Review state:
+        <strong>
+          ${escapeHtml(
+            d.reviewState || "—"
+          )}
+        </strong>
+
+        <br>
+
+        Provenance:
+        <strong>
+          ${escapeHtml(
+            d.validationStatus || "—"
+          )}
+        </strong>
+
+        <br>
+
+        Sources:
+        ${escapeHtml(
+          String(d.sourceCount || 1)
+        )}
+
+        <br>
+
+        Confidence:
+        <strong>
+          ${escapeHtml(
+            formatConfidence(
+              d.confidence
+            )
+          )}
+        </strong>
+
+        <br>
+
+        Last verified:
+        ${escapeHtml(
+          d.lastVerified || "—"
+        )}
+
+        ${
+          d.valueRaw
+            ? "<br><br>Stated value: " +
+              escapeHtml(d.valueRaw)
+            : ""
+        }
+
+      </div>
+
+      ${
+        d.missingFields
+          ? '<div class="drawer-notes"><strong>Missing fields</strong><br>' +
+            escapeHtml(d.missingFields) +
+            "</div>"
+          : ""
+      }
+
+      ${
+        d.consistencyIssues
+          ? '<div class="drawer-notes"><strong>Consistency issues</strong><br>' +
+            escapeHtml(d.consistencyIssues) +
+            "</div>"
+          : ""
+      }
+
+      ${
+        d.validationNotes
+          ? '<div class="drawer-notes">' +
+            escapeHtml(d.validationNotes) +
+            "</div>"
+          : ""
+      }
+
+      ${
+        d.sourceEvidence
+          ? '<div class="drawer-notes"><strong>Source evidence</strong><br>' +
+            escapeHtml(d.sourceEvidence) +
+            "</div>"
+          : ""
+      }
+
+    </div>
+
+
+    <div class="drawer-section">
+
+      <div class="drawer-heading">
+        Sources
+      </div>
+
+      <div class="drawer-text">
+
+        ${
+          source
+            ? `
+              <a
+                class="source-link"
+                href="${escapeHtml(source)}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                ${escapeHtml(
+                  d.source || "Open source"
+                )}
+                ↗
+              </a>
+            `
+            : escapeHtml(
+                d.source || "—"
+              )
+        }
+
+        ${
+          safeUrl(d.primarySourceUrl) &&
+          d.primarySourceUrl !== d.sourceUrl
+            ? "<br><br><strong>Primary source</strong><br>" +
+              '<a class="source-link" href="' +
+              escapeHtml(safeUrl(d.primarySourceUrl)) +
+              '" target="_blank" rel="noopener noreferrer">' +
+              escapeHtml(d.primarySourceUrl) +
+              " ↗</a>"
+            : ""
+        }
+
+        ${
+          d.corroboratingSources
+            ? "<br><br><strong>Corroborating sources</strong><br>" +
+              escapeHtml(d.corroboratingSources)
+                .replace(/\n/g, "<br>")
+            : ""
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById("overlay")
+    .classList.add("show");
+
+
+  document
+    .getElementById("drawer")
+    .classList.add("show");
+
+}
+
+
+function closeDrawer() {
+
+  document
+    .getElementById("overlay")
+    .classList.remove("show");
+
+
+  document
+    .getElementById("drawer")
+    .classList.remove("show");
+
+}
+
+
+function detailBox(label, value) {
+
+  return `
+    <div class="detail">
+
+      <div class="detail-label">
+        ${escapeHtml(label)}
+      </div>
+
+      <div class="detail-value">
+        ${escapeHtml(
+          value || "—"
+        )}
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+function drawerSection(
+  heading,
+  text
+) {
+
+  return `
+    <div class="drawer-section">
+
+      <div class="drawer-heading">
+        ${escapeHtml(heading)}
+      </div>
+
+      <div class="drawer-text">
+        ${escapeHtml(text)}
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+function switchView(view) {
+
+  currentView = view;
+
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(
+      function(button) {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.view === view
+        );
+
+      }
+    );
+
+
+  const overview =
+    document.getElementById(
+      "overviewView"
+    );
+
+
+  const title =
+    document.getElementById(
+      "tableTitle"
+    );
+
+
+  if (view === "overview") {
+
+    overview.classList.remove(
+      "hidden"
+    );
+
+    title.textContent =
+      "Latest Transactions";
+
+  } else {
+
+    overview.classList.add(
+      "hidden"
+    );
+
+    title.textContent =
+      "Deal Explorer";
+
+  }
+
+}
+
+
+function numericValue(d) {
+
+  const value =
+    Number(d.dealValue);
+
+  return Number.isFinite(value)
+    ? value
+    : -1;
+
+}
+
+
+function formatDealValue(d) {
+
+  const value =
+    Number(d.dealValue);
+
+
+  if (
+    !Number.isFinite(value) ||
+    value <= 0
+  ) {
+
+    return d.dealValueType ===
+      "Undisclosed"
+        ? "Undisclosed"
+        : "—";
+
+  }
+
+
+  /*
+    Existing pipeline stores normalised
+    absolute currency values.
+  */
+
+  let formatted;
+
+
+  if (value >= 1000000000) {
+
+    formatted =
+      (value / 1000000000)
+        .toFixed(2)
+        .replace(/\.00$/, "") +
+      "B";
+
+  }
+
+  else if (value >= 1000000) {
+
+    formatted =
+      (value / 1000000)
+        .toFixed(1)
+        .replace(/\.0$/, "") +
+      "M";
+
+  }
+
+  else if (value >= 1000) {
+
+    formatted =
+      (value / 1000)
+        .toFixed(0) +
+      "K";
+
+  }
+
+  else {
+
+    formatted =
+      value.toLocaleString();
+
+  }
+
+
+  return (
+    currencySymbol(
+      d.currency
+    ) +
+    formatted
+  );
+
+}
+
+
+function currencySymbol(currency) {
+
+  const map = {
+    USD: "$",
+    GBP: "£",
+    EUR: "€",
+    JPY: "¥",
+    CNY: "¥"
+  };
+
+  return (
+    map[currency] ||
+    (
+      currency
+        ? currency + " "
+        : ""
+    )
+  );
+
+}
+
+
+function formatConfidence(value) {
+
+  const number =
+    Number(value);
+
+
+  if (!Number.isFinite(number)) {
+    return "—";
+  }
+
+
+  const pct =
+    number <= 1
+      ? number * 100
+      : number;
+
+
+  return (
+    Math.round(pct) + "%"
+  );
+
+}
+
+
+function reviewBadge(d) {
+
+  const state =
+    d.reviewState || "";
+
+  const tier =
+    d.validationStatus || "";
+
+
+  if (!state && !tier) {
+    return '<span class="muted">—</span>';
+  }
+
+
+  const cls =
+    state === "Reject"
+      ? "q-low"
+      : state === "Review"
+        ? "q-mid"
+        : "q-high";
+
+
+  const label =
+    state || tier;
+
+
+  const title =
+    [state, tier]
+      .filter(Boolean)
+      .join(" · ");
+
+
+  return (
+    '<span class="quality-badge ' +
+    cls +
+    '" title="' +
+    escapeHtml(title) +
+    '">' +
+    escapeHtml(label) +
+    "</span>"
+  );
+
+}
+
+
+function parseDate(value) {
+
+  if (!value) {
+    return null;
+  }
+
+
+  const parts =
+    value.split("-");
+
+
+  if (parts.length !== 3) {
+    return null;
+  }
+
+
+  return new Date(
+    Number(parts[0]),
+    Number(parts[1]) - 1,
+    Number(parts[2])
+  );
+
+}
+
+
+function displayDate(value) {
+
+  const date =
+    parseDate(value);
+
+
+  if (!date) {
+    return value || "—";
+  }
+
+
+  return date.toLocaleDateString(
+    "en-GB",
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function formatMonth(value) {
+
+  const parts =
+    value.split("-");
+
+
+  const date =
+    new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      1
+    );
+
+
+  return date.toLocaleDateString(
+    "en-GB",
+    {
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function safeUrl(value) {
+
+  if (!value) {
+    return "";
+  }
+
+
+  try {
+
+    const url =
+      new URL(value);
+
+    if (
+      url.protocol === "https:" ||
+      url.protocol === "http:"
+    ) {
+      return value;
+    }
+
+  } catch(e) {}
+
+
+  return "";
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(
+    value === null ||
+    value === undefined
+      ? ""
+      : value
+  )
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;")
+  .replace(/'/g, "&#039;");
+
+}
+
+
+start();
+
+</script>
+
+</body>
+</html>

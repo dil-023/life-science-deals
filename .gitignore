@@ -1,0 +1,22 @@
+# Local Apps Script link (contains your scriptId) - keep private
+.clasp.json
+
+# Data exports / spreadsheets - never commit data
+*.xlsx
+*.xls
+*.csv
+~$*
+
+# Dependencies
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets
+.env
+.env.*
+*.pem
