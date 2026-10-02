@@ -754,14 +754,6 @@
           <option value="">All statuses</option>
         </select>
 
-        <select id="reviewState">
-          <option value="">All review states</option>
-        </select>
-
-        <select id="validationStatus">
-          <option value="">All provenance tiers</option>
-        </select>
-
         <select id="country">
           <option value="">All geographies</option>
         </select>
@@ -860,30 +852,6 @@
 
       </div>
 
-
-      <div class="grid-2">
-
-        <section class="panel">
-          <div class="panel-title">Review State</div>
-          <div class="panel-subtitle">
-            How much data needs human attention
-          </div>
-
-          <div id="reviewBars" class="bars"></div>
-        </section>
-
-
-        <section class="panel">
-          <div class="panel-title">Provenance</div>
-          <div class="panel-subtitle">
-            How well corroborated the sources are
-          </div>
-
-          <div id="provenanceBars" class="bars"></div>
-        </section>
-
-      </div>
-
     </div>
 
 
@@ -928,7 +896,6 @@
               <th>Modality</th>
               <th>Stage</th>
               <th>Value</th>
-              <th>Review</th>
             </tr>
           </thead>
 
@@ -978,8 +945,6 @@ const filterIds = [
   "company",
   "currency",
   "dealStatus",
-  "reviewState",
-  "validationStatus",
   "country"
 ];
 
@@ -1099,18 +1064,6 @@ populateSelect(
   populateSelect(
     "dealStatus",
     unique("dealStatus")
-  );
-
-
-  populateSelect(
-    "reviewState",
-    unique("reviewState")
-  );
-
-
-  populateSelect(
-    "validationStatus",
-    unique("validationStatus")
   );
 
 
@@ -1422,22 +1375,6 @@ function applyFilters() {
       ) return false;
 
 
-      if (
-        !matches(
-          d.reviewState,
-          "reviewState"
-        )
-      ) return false;
-
-
-      if (
-        !matches(
-          d.validationStatus,
-          "validationStatus"
-        )
-      ) return false;
-
-
       /* COMPANY */
 
       const company =
@@ -1569,18 +1506,6 @@ function renderAll() {
     "modalityBars",
     "modality",
     "modality"
-  );
-
-  renderBars(
-    "reviewBars",
-    "reviewState",
-    "reviewState"
-  );
-
-  renderBars(
-    "provenanceBars",
-    "validationStatus",
-    "validationStatus"
   );
 
   renderTimeline();
@@ -2075,7 +2000,7 @@ function renderTable() {
 
     body.innerHTML =
       '<tr>' +
-      '<td colspan="9" class="empty">' +
+      '<td colspan="8" class="empty">' +
       'No deals match these filters.' +
       '</td>' +
       '</tr>';
@@ -2142,10 +2067,6 @@ function renderTable() {
               ${escapeHtml(
                 formatDealValue(d)
               )}
-            </td>
-
-            <td>
-              ${reviewBadge(d)}
             </td>
 
           </tr>
@@ -2480,24 +2401,6 @@ function openDeal(d) {
       </div>
 
       <div class="drawer-text">
-
-        Review state:
-        <strong>
-          ${escapeHtml(
-            d.reviewState || "—"
-          )}
-        </strong>
-
-        <br>
-
-        Provenance:
-        <strong>
-          ${escapeHtml(
-            d.validationStatus || "—"
-          )}
-        </strong>
-
-        <br>
 
         Sources:
         ${escapeHtml(
@@ -2871,51 +2774,6 @@ function formatConfidence(value) {
 
   return (
     Math.round(pct) + "%"
-  );
-
-}
-
-
-function reviewBadge(d) {
-
-  const state =
-    d.reviewState || "";
-
-  const tier =
-    d.validationStatus || "";
-
-
-  if (!state && !tier) {
-    return '<span class="muted">—</span>';
-  }
-
-
-  const cls =
-    state === "Reject"
-      ? "q-low"
-      : state === "Review"
-        ? "q-mid"
-        : "q-high";
-
-
-  const label =
-    state || tier;
-
-
-  const title =
-    [state, tier]
-      .filter(Boolean)
-      .join(" · ");
-
-
-  return (
-    '<span class="quality-badge ' +
-    cls +
-    '" title="' +
-    escapeHtml(title) +
-    '">' +
-    escapeHtml(label) +
-    "</span>"
   );
 
 }
