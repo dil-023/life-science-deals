@@ -1,3 +1,5 @@
+**[Open the live dashboard →](https://script.google.com/macros/s/AKfycbz4KAzPzZhJRBJuI3WLidHgfckTCeYKUuaixeDazMwmRaxRSWY5P8bbf5103VC0h9iV/exec)**
+
 # Life Sciences Deal Intelligence
 
 A serverless pipeline that ingests life-sciences news, uses an LLM to extract
@@ -7,8 +9,7 @@ serves an interactive dashboard for commercial and strategic analysis.
 Built with **Google Apps Script**, **Google Sheets** and the **DeepSeek** API —
 no servers, no infrastructure.
 
-<!-- Add a screenshot: docs/screenshot.png -->
-<!-- ![Dashboard](docs/screenshot.png) -->
+![Dashboard](docs/screenshot.png)
 
 ---
 
@@ -97,8 +98,7 @@ actionable dimensions:
 
 ## Tech stack
 
-Google Apps Script (V8) · Google Sheets · HtmlService · DeepSeek Chat API ·
-RSS · clasp
+HTML · JavaScript
 
 ## Project structure
 
