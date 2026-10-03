@@ -4,7 +4,8 @@
 
 ### [→ Explore the Live Dashboard](https://script.google.com/macros/s/AKfycbz4KAzPzZhJRBJuI3WLidHgfckTCeYKUuaixeDazMwmRaxRSWY5P8bbf5103VC0h9iV/exec)
 
-![Life Sciences Deal Intelligence Dashboard](docs/screenshot.png)
+<img width="1138" height="1159" alt="image" src="https://github.com/user-attachments/assets/ccd14897-ec49-45ae-acf8-f677760de9a5" />
+<img width="1092" height="1139" alt="image" src="https://github.com/user-attachments/assets/27a3aaa6-13da-45a4-b068-689ce3ff676e" />
 
 ---
 
