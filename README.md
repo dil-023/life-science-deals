@@ -295,4 +295,6 @@ The data-engineering and dashboard components are operational. Current developme
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+All rights reserved. This project is shared publicly for viewing and
+evaluation only; no permission is granted to use, copy, modify, distribute or
+sell it. See [LICENSE](LICENSE).
