@@ -235,49 +235,15 @@ docs/                  # project images and documentation
 
 ---
 
-## Running the project
+### Technical implementation
 
-### Requirements
+The platform was built using Google Apps Script, JavaScript, HTML/CSS, Google Sheets and the DeepSeek API.
 
-- Google account
-- Google Sheet
-- Node.js and `@google/clasp`
-- DeepSeek API key
+Google Sheets acts as the structured data layer, while Apps Script manages news ingestion, LLM-assisted extraction, classification, deduplication and validation. The dashboard is served as an Apps Script web application.
 
-### Configure the project
+API credentials and deployment-specific configuration are stored securely using Apps Script Properties and are not included in this repository.
 
-Create a Google Sheet containing:
-
-```text
-Deals
-News Feed
-Sources
-Taxonomy
-```
-
-`Pipeline Log` can be generated automatically.
-
-Clone the repository and connect it to an Apps Script project:
-
-```bash
-npm install -g @google/clasp
-clasp login
-cp .clasp.json.example .clasp.json
-clasp push
-```
-
-Add the following under **Apps Script → Project Settings → Script Properties**:
-
-| Property | Required | Purpose |
-|---|---:|---|
-| `DEEPSEEK_API_KEY` | Yes | API authentication |
-| `GOOGLE_NEWS_QUERIES` | No | Configurable news searches |
-| `MAX_RUNTIME_MS` | No | Pipeline execution budget |
-
-API credentials should **never be committed to this repository**.
-
-Run `setupProject()` once to initialise the required structure, followed by `runEverything()` to execute the pipeline.
-
+The repository contains the core project code for transparency and demonstration purposes; the deployed version can be explored through the live dashboard.
 ---
 
 ## Project status
