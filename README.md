@@ -199,8 +199,6 @@ The web application currently includes:
 - Individual deal detail views
 - Links to underlying source material
 
-### [Launch Life Sciences Deal Intelligence →](https://script.google.com/macros/s/AKfycbz4KAzPzZhJRBJuI3WLidHgfckTCeYKUuaixeDazMwmRaxRSWY5P8bbf5103VC0h9iV/exec)
-
 ---
 
 ## Reliability
@@ -292,12 +290,6 @@ The data-engineering and dashboard components are operational. Current developme
 - external-innovation trend analysis
 - transaction strategy case studies
 - deeper analysis of selected pharmaceutical deals
-
----
-
-## Live project
-
-### **[→ Explore the Live Life Sciences Deal Intelligence Dashboard](https://script.google.com/macros/s/AKfycbz4KAzPzZhJRBJuI3WLidHgfckTCeYKUuaixeDazMwmRaxRSWY5P8bbf5103VC0h9iV/exec)**
 
 ---
 
