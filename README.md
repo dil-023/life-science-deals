@@ -89,12 +89,11 @@ actionable dimensions:
 ## Dashboard
 
 - KPI cards: deals, M&A, licensing, partnerships, therapeutic areas.
-- Review-state and provenance distribution panels.
 - Deal activity timeline; deal-type / therapeutic-area / modality bars.
 - Filters: search, date, deal type, therapeutic area, modality, stage, disease
-  area, company, currency, status, review state, provenance, country.
-- Sortable table with a Review badge; detail drawer with sources, evidence,
-  missing fields, consistency issues and confidence.
+  area, company, currency, status, country.
+- Sortable table; detail drawer with sources, evidence, missing fields,
+  consistency issues and confidence.
 
 ## Tech stack
 
